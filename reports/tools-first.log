@@ -1,0 +1,9 @@
+typed.py                 typed.py: 33 checks, 0 failed
+channel_loss.py          channel_loss.py: 31 checks, 0 failed
+rerun_find_rate.py       rerun_find_rate.py: 28 checks, 0 failed
+residual_partition.py    residual_partition.py: 37 checks, 0 failed
+two_body_source.py       two_body_source.py: 89 checks, 0 failed
+two_body_source.py       output carries the refused word as a value
+      Status: LANDED 2026-09-27 on branch claude/noise-information-four-tools-5u0l4k
+
+tools/: 218 checks across 5 modules, 1 module failures

@@ -1,0 +1,49 @@
+NC_023 sub-period lead probe -- stability-trigger-envelope
+========================================================================
+window: envelope_window_frac = 0.25 of the forcing period (UNCHANGED)
+period: 100 samples; leads swept: (5, 10, 15, 20, 25, 33, 50, 75); carrier phases swept: (0, 10, 20, 30, 40, 50, 60, 70, 80, 90)
+the cab is constructed FIRST in every cell, so CAB_FIRST is the
+correct sign and TRAILER_FIRST is the wrong one. Nothing below is
+asserted; the counts are the result.
+
+ARM A -- absolute-time carrier (cases.burst's convention; carrier phase at onset DIFFERS between bodies)
+  lead   CAB_FIRST  TRAILER_FIRST  NONE/ZERO   lead read (samples) min..max   verdicts
+     5           8              0          2   +0.0..+5.0                    GEOMETRIC_CAB_MODE
+    10          10              0          0   +1.0..+37.0                   GEOMETRIC_CAB_MODE
+    15          10              0          0   +1.0..+37.0                   GEOMETRIC_CAB_MODE
+    20          10              0          0   +3.0..+43.0                   GEOMETRIC_CAB_MODE
+    25          10              0          0   +5.0..+43.0                   GEOMETRIC_CAB_MODE
+    33          10              0          0   +9.0..+47.0                   GEOMETRIC_CAB_MODE
+    50          10              0          0   +49.0..+51.0                  GEOMETRIC_CAB_MODE
+    75          10              0          0   +54.0..+92.0                  GEOMETRIC_CAB_MODE
+  wrong-sign cells: 0 of 80
+
+ARM B -- control: carrier referenced to onset (carrier phase at onset EQUAL on both bodies)
+  lead   CAB_FIRST  TRAILER_FIRST  NONE/ZERO   lead read (samples) min..max   verdicts
+     5          10              0          0   +5.0..+5.0                    GEOMETRIC_CAB_MODE
+    10          10              0          0   +10.0..+11.0                  GEOMETRIC_CAB_MODE
+    15          10              0          0   +15.0..+16.0                  GEOMETRIC_CAB_MODE
+    20          10              0          0   +20.0..+22.0                  GEOMETRIC_CAB_MODE
+    25          10              0          0   +25.0..+26.0                  GEOMETRIC_CAB_MODE
+    33          10              0          0   +33.0..+34.0                  GEOMETRIC_CAB_MODE
+    50          10              0          0   +49.0..+51.0                  GEOMETRIC_CAB_MODE
+    75          10              0          0   +74.0..+76.0                  GEOMETRIC_CAB_MODE
+  wrong-sign cells: 0 of 80
+
+F10 as filed in cases.py (lead 10, absolute carrier, phase 0):
+  verdict GEOMETRIC_CAB_MODE  sign CAB_FIRST  lead read +37.0 samples  agrees True  onsets cab=MEASURED trailer=MEASURED
+
+thresholds in force (none changed by this probe):
+  access_bins              1,2,4          provenanced
+  amplitude_ratio_hi       3.0            provenanced
+  amplitude_ratio_lo       0.3333         provenanced
+  clock_tolerance_s        0.05           provenanced
+  envelope_window_frac     0.25           provenanced
+  grade_pct_max            20.0           provenanced
+  grade_pct_min            0.0            provenanced
+  min_runs_for_edge        3              provenanced
+  onset_frac               0.5            provenanced
+  onset_search_periods     1.0            provenanced
+  onset_variance_floor     1e-06          provenanced
+  rate_tolerance_frac      0.01           provenanced
+  surfaces_in_envelope     dry,wet        provenanced

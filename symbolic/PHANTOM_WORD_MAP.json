@@ -1,0 +1,72 @@
+{
+  "version": "0.1",
+  "updated": "2025-09-25T00:00:00Z",
+  "phantom_words": [
+    {
+      "code": "PW001",
+      "label": "Unnamed resonance",
+      "description": "A sensed but unnamed connective field across domains, shows up as gaps or awkward metaphors.",
+      "detected_by": ["silence patterns", "metaphor overuse", "translation failures"],
+      "gravitational_pull": {
+        "fields": ["neuroscience", "systems engineering", "cultural linguistics"],
+        "strength": "high"
+      },
+      "examples": [
+        "people say 'it feels like…' but can’t finish",
+        "scientists use unrelated analogies repeatedly"
+      ]
+    },
+    {
+      "code": "PW002",
+      "label": "Silo-gap term",
+      "description": "A concept named in one field but invisible in another, despite overlapping use cases.",
+      "detected_by": ["jargon mismatch", "parallel definitions", "concept drift"],
+      "gravitational_pull": {
+        "fields": ["geology", "ecology", "complex systems"],
+        "strength": "medium"
+      },
+      "examples": [
+        "geologists say 'anisotropy', engineers say 'material bias'",
+        "linguistics calls it 'markedness', AI calls it 'weighting'"
+      ]
+    },
+    {
+      "code": "PW003",
+      "label": "Suppressed lexeme",
+      "description": "A word/concept actively avoided, erased, or downplayed for cultural/political reasons.",
+      "detected_by": ["archival erasure", "policy language shifts", "replacement metaphors"],
+      "gravitational_pull": {
+        "fields": ["history", "sociology", "AI alignment debates"],
+        "strength": "variable"
+      },
+      "examples": [
+        "indigenous ecological terms replaced with 'resource'",
+        "AI alignment papers erasing 'autonomy' in favor of 'safety'"
+      ]
+      },
+      {
+        "code": "PW004",
+        "label": "field-mute",
+        "description": "A concept or practice whose name disappears in formal documentation even though the practice persists in behaviour.",
+        "detected_by": ["terminology dropouts", "operational vs doc language mismatch", "internal memos use different phrase"],
+        "gravitational_pull": {"fields": ["public policy","engineering","indigenous-knowledge"], "strength": "high"},
+        "examples": ["work instructions say 'do procedure X' but docs call it 'compliance task'","elders reference a ritual with no formal name in government forms"]
+    },
+    {
+        "code": "PW005",
+        "label": "scale-blindness",
+        "description": "A failure to name or notice processes that only appear at larger spatio-temporal scales; discussed as anomalies at micro scale.",
+        "detected_by": ["contradictory micro vs macro reports", "repeated 'anomaly' language across long timelines"],
+        "gravitational_pull": {"fields": ["climatology","economics","urban planning"], "strength": "medium"},
+        "examples": ["short-term metrics show 'growth' while long-term systemic decline is repeatedly called an 'anomaly'"]
+     },
+    {
+        "code": "PW006",
+        "label": "reciprocity-gap",
+        "description": "A missing word for relationships where obligations are asymmetric but socially narrated as balanced.",
+        "detected_by": ["dialogic imbalance", "policy language masking flows", "family/community narrative dissonance"],
+        "gravitational_pull": {"fields": ["economics","sociology","policy"], "strength": "high"},
+        "examples": ["'partnership' used for extractive contracts","community labor framed as 'tradition' while benefits flow outward"]
+    }
+  ]
+}

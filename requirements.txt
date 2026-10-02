@@ -1,0 +1,6 @@
+# Core pipeline: main.py, all four processors, dashboard, symbolic engine.
+numpy>=1.21.0
+
+# The phantom word detector needs a heavier NLP stack (spacy + torch via
+# sentence-transformers) that nothing else in the pipeline uses.
+# Install separately:  pip install -r requirements-nlp.txt

@@ -1,0 +1,5 @@
+SELFTEST
+  PASS e0 neighbourhood -> e0
+  PASS e2 neighbourhood -> e2
+  PASS ordinary point mu0=6, x0=0.5 -> e2 (agrees with reduced)
+  PASS reduced threshold at mu=1

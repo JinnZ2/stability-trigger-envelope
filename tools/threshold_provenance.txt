@@ -1,0 +1,24 @@
+# tools/threshold_provenance.txt
+#
+# APPEND ONLY. One row per threshold value ever in force.
+# Fields: DATE  KEY  VALUE  STATUS  WHO  WHY
+#
+# A value with no row here is unprovenanced and the loader says so.
+
+2026-09-24  n1.confidence               0.95              DECLARED     DISPATCH_NOISE-1  conventional two-sided level; no measurement behind it
+2026-09-24  n1.reconstructed_attempts   50                PLACEHOLDER  DISPATCH_NOISE-1  the ART press report gives percentages and no counts; 50 is assumed so the tool runs at all
+2026-09-24  n1.denominator_sweep        10,25,50,100,250  PLACEHOLDER  DISPATCH_NOISE-1  chosen to span two orders; exists so the assumed denominator is visible as an assumption
+2026-09-24  n2.confidence               0.95              DECLARED     DISPATCH_NOISE-1  same level as n1 so the two tools' intervals are comparable
+2026-09-24  n3.sign_floor               0.0               PLACEHOLDER  DISPATCH_NOISE-1  no measurement noise model exists for any real input; 0.0 means every non-zero residual is given a sign
+2026-09-24  n4.amplitude_ratio_hi       3.0               PLACEHOLDER  DISPATCH_NOISE-1  no instrument; 3.0 is a round number and is not derived from any bench result
+2026-09-24  n4.amplitude_ratio_lo       0.3333            PLACEHOLDER  DISPATCH_NOISE-1  reciprocal of n4.amplitude_ratio_hi so the two verdicts are symmetric
+2026-09-24  n4.clock_tolerance_frac     0.01              PLACEHOLDER  DISPATCH_NOISE-1  arbitrary; a real value comes from the two loggers' oscillator specs
+2026-09-24  n4.phase_variance_floor     1e-06             PLACEHOLDER  DISPATCH_NOISE-1  added while building F1: the fixture asks for a phase lead against a QUIET body, and a lead against a channel with no variation is not a measurement. Value is arbitrary; a real one comes from the logger's own noise floor.
+# KINDS widened 2026-09-24 in typed.py for N4: SOURCE_A_MODE, SOURCE_B,
+# TRAILER_CHANNEL_ABSENT. Recorded here because the closed vocabulary refusing
+# an undeclared kind is the guard, and a widening that leaves no trace is the
+# guard being stepped around rather than used.
+2026-09-27  n4.envelope_window_frac     1.0               PLACEHOLDER  OPERATOR_INSTRUCTION_2026-09-24_onset-not-phase  onset timing replaces the phase lead in the decision path (NC_013). Set to ONE forcing period, not the 0.25 the ESP-1 side carries: a moving-RMS window shorter than the carrier period is not stationary, so the onset index would move with the carrier phase at onset and a sub-period lead could read with the wrong sign. That is derived, not measured -- this session could not execute -- and is recorded as NC_023.
+2026-09-27  n4.onset_frac               0.5               PLACEHOLDER  OPERATOR_INSTRUCTION_2026-09-24_onset-not-phase  fraction of the body's OWN peak envelope; relative so onset measures WHEN and never HOW MUCH. Round number, no measurement behind it. Same value as the ESP-1 side.
+2026-09-27  n4.onset_search_periods     1.0               PLACEHOLDER  OPERATOR_INSTRUCTION_2026-09-24_onset-not-phase  the instruction's own words: "within one forcing period of the event". Same value as the ESP-1 side.
+2026-09-27  n4.phase_variance_floor     1e-06             PLACEHOLDER  OPERATOR_INSTRUCTION_2026-09-24_onset-not-phase  VALUE UNCHANGED; basis widened. Now also the floor below which an envelope peak is NO_EVENT rather than an onset. phase_lead() is DIAGNOSTIC from this date and decides nothing in source().

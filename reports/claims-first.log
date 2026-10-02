@@ -1,0 +1,211 @@
+==========================================================================
+CLAIM CHECK -- Noise-as-Information-Sensor
+==========================================================================
+
+[C1] FALSIFIED
+  claim:    Setup instructions and module tables point at real files.
+            dashboard/index.html -- absent, cited by README v0.1 setup step 3
+            hardware/arduino_code -- absent, cited by README v0.1 setup step 1
+            software/noise_engine.py -- absent, cited by software/README v0.1
+            software/em_field_processor.py -- absent, cited by README v0.1 module table
+            software/bio_processor.py -- absent, cited by software/README v0.1
+            dashboard/noise_dashboard.py -- absent, cited by README v0.1 module table
+
+[C2] FALSIFIED
+  claim:    The quantum processor analyses fluctuations at fs/ps/ns timescales.
+            self.quantum_timescales = [1e-15, 1e-12, 1e-09]
+            occurrences of the name in the module: 1 (assignment only)
+            no method reads it; the input carries no timestamps and no sample rate
+
+[C3] FALSIFIED
+  claim:    The pipeline is non-filtering and preserves raw data unmodified.
+            np.diff(molecular)        = [-0.03, 0.06, -0.04, 0.02]
+            extract_fluctuations()    = [-0.029695, 0.05896, -0.03925, 0.020941]
+            synthetic component added = [0.000305, -0.00104, 0.00075, 0.000941]
+            injected magnitude is 2.0% of the real signal
+            rng is reseeded to 42 on every call, so the identical synthetic
+            vector is re-added each run (repeat call identical: True)
+
+[C4] FALSIFIED
+  claim:    The EM layer produces solar/geomagnetic/cosmic-ray readings for the demo input.
+            anomalies detected on demo motion data: [] (n=0)
+            correlate_solar/geomagnetic both return 0.0 unless n >= 3
+            detect_cosmic_ray_signatures tests `a > 1.2` against readings the
+            rest of the pipeline treats as normalised to roughly 0..1
+            result: {'solar_field_effects': 0.0, 'geomagnetic_influences': 0.0, 'cosmic_ray_impacts': 0}
+
+[C5] REVISED
+  claim:    Resonance detection measures coherence, not recording length.
+            one identical sine phenomenon, resampled:
+            n=   5  entropy=   1.512  verdict=Resonance Detected
+            n=  10  entropy=   3.023  verdict=Resonance Detected
+            n=  20  entropy=   6.047  verdict=Resonance Detected
+            n=  50  entropy=  15.116  verdict=Resonance Detected
+            n= 100  entropy=  30.232  verdict=Resonance Detected
+            main.py demo (n=5, values near 1.0): entropy=0.098 -> Subthreshold
+            non_local_correlations is -sum(x*log|x|), which grows with sample count.
+            It is averaged against a bounded [0,1] coherence term and a fixed 0.75
+            threshold, so beyond a handful of samples the quantum domain saturates.
+            The demo escapes only because its values sit near 1.0, where x*log(x) ~ 0.
+
+[C6] FALSIFIED
+  claim:    The 0.75 resonance threshold compares like with like across domains.
+            gaia output: {'planetary_coordination': np.True_, 'climate_intelligence': np.False_, 'earth_system_feedback': np.float64(-0.941)}
+            coerced to scalars and averaged: [1.0, 0.0, -0.941] -> mean 0.0197
+            booleans become 1.0/0.0 and are averaged with a Pearson r in [-1, 1];
+            the quantum domain adds an unbounded entropy term to the same mean.
+            The 0.75 threshold is therefore applied to a quantity with no unit.
+
+[C7] FALSIFIED
+  claim:    The dashboard accepts any sensor series the Arduino sketch can produce.
+            n=2: raises ValueError
+            n=3: raises ValueError
+            n=4: completes
+            n=5: completes
+            negative molecular input: earth_system_feedback=nan (silent nan, no warning)
+            gaia and biological index fixed-length baselines (4 and 3 samples)
+            without checking the input is long enough.
+
+[C8] FALSIFIED
+  claim:    Processor output can be logged or transported as JSON.
+            json.dumps raises TypeError: Object of type bool is not JSON serializable
+            numpy scalars leak out of the processors instead of Python types:
+              quantum.non_local_correlations: float64
+              planetary.planetary_coordination: bool
+              planetary.climate_intelligence: bool
+              planetary.earth_system_feedback: float64
+
+[C9] HOLDS
+  claim:    PHANTOM_WORD_MAP.json is machine-readable.
+            parses; 6 entries: ['PW001', 'PW002', 'PW003', 'PW004', 'PW005', 'PW006']
+            schema consistent across entries: True
+            gravitational_pull.strength values: ['high', 'medium', 'variable']
+
+[C10] FALSIFIED
+  claim:    silence_signal measures whether a phrase appears near a definition.
+            'This analysis is noisy.' -> scored as DEFINED via ['is']
+            'The noise was measured.' -> scored as DEFINED via ['is']
+            'Anisotropy appeared in the sample.' -> scored as DEFINED via ['is']
+            'A misread signal.' -> scored as DEFINED via ['is']
+            the test is a substring match, so 'is' fires inside analysis, noise,
+            Anisotropy and misread. Any corpus in this domain is scored as
+            fully defined, driving silence_signal toward 0 and suppressing every candidate.
+
+[C11] FALSIFIED
+  claim:    jargon_mismatch scores how a given phrase diverges across domains.
+            the `phrase` parameter is never read in the function body: True
+            it embeds each domain's whole concatenated text, so every phrase sharing
+            a domain set receives an identical score
+            sim.mean() spans the full matrix including the self-similarity diagonal:
+              2 domains, embeddings maximally unrelated (off-diagonal 0.0): reported mismatch 0.500, ceiling 0.500
+              3 domains, embeddings maximally unrelated (off-diagonal 0.0): reported mismatch 0.667, ceiling 0.667
+              4 domains, embeddings maximally unrelated (off-diagonal 0.0): reported mismatch 0.750, ceiling 0.750
+            for realistic non-negative sentence similarities the score is capped at
+            1 - 1/n, so with the documented 2-domain case it cannot exceed 0.500 and
+            contributes at most 0.200 toward the 0.4 flagging threshold.
+
+[C12] OPEN
+  claim:    phantom_detector.py reproduces the example output in symbolic/README.md.
+            optional NLP stack not installed (spacy).
+            install with: pip install -r requirements-nlp.txt
+                         python -m spacy download en_core_web_sm
+
+[NC_002] HOLDS
+  claim:    With the counts unread, the CHANNEL_LOSS verdict is set by the assumed denominator.
+            the same two published percentages (>= 90% direct, as low as 32%
+            mediated), read at five assumed denominators:
+              n=  10  realized 0.90/0.30  point loss 0.6000  -> VALUE
+              n=  25  realized 0.92/0.32  point loss 0.6000  -> CHANNEL_LOSS
+              n=  50  realized 0.90/0.32  point loss 0.5800  -> CHANNEL_LOSS
+              n= 100  realized 0.90/0.32  point loss 0.5800  -> CHANNEL_LOSS
+              n= 250  realized 0.90/0.32  point loss 0.5800  -> CHANNEL_LOSS
+            verdict at n=10:  VALUE (intervals overlap: True)
+            verdict at n=250: CHANNEL_LOSS (intervals overlap: False)
+            nothing about the report changed across those rows. The real counts
+            are UNREAD -- the publisher hosts are unreachable from this
+            environment -- so the denominator is assumed, and the verdict is a
+            property of that assumption.
+            at the small end the POINT moves too: reconstruction error 0.0200 at n=10 against 0.0000 at n=250, because an integer
+            count over a small denominator cannot represent an arbitrary
+            percentage.
+
+[NC_006] HOLDS
+  claim:    The assigned-path bound is tighter than the headline bound on the same eleven runs.
+            reported campaign: 11 runs, 1 find, 10 misses
+            headline (any path):   0.0909 [0.0023, 0.4128]  (1/11)
+            assigned path only:    0.0000 [0.0000, 0.2849]  (0/11)
+            verdict kind: SINGLE_FIND
+            side-path share of finds: 1.0
+            the one find came off a SIDE path, so the route the campaign was
+            designed around found nothing in eleven runs. Its upper bound is
+            0.2849 against the headline's 0.4128.
+            this bounds the PROCESS, not the result: a rarely-reached real
+            result and a once-reached artifact produce the same 1/11.
+
+[NC_009] HOLDS
+  claim:    No candidate is scaled or subtracted; the residual does not move with the candidate list.
+            residual with no candidates:    [0.19999999999999996, 0.19999999999999996, 0.20000000000000018, 0.19999999999999996, 0.19999999999999996]
+            residual with three candidates: [0.19999999999999996, 0.19999999999999996, 0.20000000000000018, 0.19999999999999996, 0.19999999999999996]
+            identical: True
+            consistent candidates: ['a'] of three offered, ranked by nothing
+            magnitude fields at the constructor: magnitude=refused, scale=refused, amplitude=refused, coefficient=refused, weight=refused, size=refused, gain=refused
+            a candidate carries a SIGN or a SHAPE and nothing else. A fitted
+            magnitude makes every candidate consistent, which is how an
+            unexplained remainder becomes a confirmed mechanism with no
+            measurement taken.
+
+[NC_013] FALSIFIED
+  claim:    A phase lead is fixed only modulo the forcing period, and is not measurable at all against a channel that does not move.
+            forcing period 40 samples at 100 Hz
+            lead of zero periods: +0.0000 s
+            lead of one period:   +0.0000 s   <- indistinguishable
+            constructed LAG of 4 samples: raw search returns -4, wrapped to -4
+              the raw branch is chosen by where the search lands. When this row
+              was first run the SIGN of that lead was what the agreement check
+              read, so the branch was deciding a verdict. Leads are reported in
+              the principal branch (-P/2, +P/2] and, from 2026-09-27, the phase
+              is read by NO verdict: source() decides on amplitude checked
+              against ONSET timing (NC_022) and its return carries no phase.
+            near half a period: sign_determined=False -- the sign is withheld, not reported
+            fixture F1 (A bursts, B quiet): SOURCE_A_MODE, decided by amplitude_ratio, checked against onset timing; phase diagnostic on the same traces: NOT_EVALUABLE
+              a phase lead against a channel that does not move is a property
+              of its residual variation (NC_012).
+
+[NC_022] HOLDS
+  claim:    With A leading by exactly one forcing period, onset timing classifies the source and the phase diagnostic reads zero.
+            F4: body A bursts at sample 100, body B at sample 140, one forcing
+            period (40 samples) later. Amplitude ratio 7.189390071142242.
+            verdict: SOURCE_A_MODE   decided by: amplitude_ratio, checked against onset timing
+            onset lead of A over B: +40.0 samples (+0.400 s), onset agrees: True
+            phase DIAGNOSTIC on the same traces: +0.0 samples in the principal branch
+              one period and zero are the same peak to a periodic correlation,
+              so phase reads A as not leading. Onset reads the period. The
+              worked instance predicts a lead of about one period, which is
+              exactly the value a phase reading cannot resolve.
+
+==========================================================================
+SUMMARY
+==========================================================================
+  C1     FALSIFIED  Setup instructions and module tables point at real f
+  C2     FALSIFIED  The quantum processor analyses fluctuations at fs/ps
+  C3     FALSIFIED  The pipeline is non-filtering and preserves raw data
+  C4     FALSIFIED  The EM layer produces solar/geomagnetic/cosmic-ray r
+  C5     REVISED    Resonance detection measures coherence, not recordin
+  C6     FALSIFIED  The 0.75 resonance threshold compares like with like
+  C7     FALSIFIED  The dashboard accepts any sensor series the Arduino 
+  C8     FALSIFIED  Processor output can be logged or transported as JSO
+  C9     HOLDS      PHANTOM_WORD_MAP.json is machine-readable.
+  C10    FALSIFIED  silence_signal measures whether a phrase appears nea
+  C11    FALSIFIED  jargon_mismatch scores how a given phrase diverges a
+  C12    OPEN       phantom_detector.py reproduces the example output in
+  NC_002 HOLDS      With the counts unread, the CHANNEL_LOSS verdict is 
+  NC_006 HOLDS      The assigned-path bound is tighter than the headline
+  NC_009 HOLDS      No candidate is scaled or subtracted; the residual d
+  NC_013 FALSIFIED  A phase lead is fixed only modulo the forcing period
+  NC_022 HOLDS      With A leading by exactly one forcing period, onset 
+
+  C  rows  FALSIFIED=9  HOLDS=1  OPEN=1  REVISED=1   (12 of 12 C ids carry a harness verdict)
+  NC rows  FALSIFIED=1  HOLDS=4   (5 of 25 NC ids in tools/CLAIM_TABLE.md carry a harness verdict; the other 20 carry a TABLE status (SUPPORTED / UNVERIFIED / CORRECTED / CLOSED), which is not a verdict here)
+  all      FALSIFIED=10  HOLDS=5  OPEN=1  REVISED=1   (both series; read the two lines above, not this one)
+
+  Write-up: docs/FALSIFICATION_LOG.md (C rows); tools/CLAIM_TABLE.md (NC rows)

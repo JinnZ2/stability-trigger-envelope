@@ -1,0 +1,32 @@
+# tools/thresholds.txt
+#
+# Every threshold and every assumed quantity used by the four tools in this
+# directory. Nothing in tools/ hardcodes a number that belongs here.
+#
+# Each row: KEY <tab-or-space> VALUE <space> STATUS <space> BASIS
+# STATUS is one of:
+#   PLACEHOLDER  chosen for the tool to run; no measurement behind it
+#   DECLARED     a convention the caller is expected to override per dataset
+#
+# Provenance is append-only in threshold_provenance.txt. Editing a value here
+# without appending a row there is the defect the file exists to prevent.
+
+# --- N1 channel_loss.py -------------------------------------------------
+n1.confidence                0.95   DECLARED     two-sided interval level
+n1.reconstructed_attempts    50     PLACEHOLDER  denominator assumed when a source reports only a percentage
+n1.denominator_sweep         10,25,50,100,250  PLACEHOLDER  candidate denominators; the interval width is a property of this choice
+
+# --- N2 rerun_find_rate.py ----------------------------------------------
+n2.confidence                0.95   DECLARED     two-sided interval level
+
+# --- N3 residual_partition.py -------------------------------------------
+n3.sign_floor                0.0    PLACEHOLDER  |residual| at or below this is SIGN_UNRESOLVED, not a sign
+
+# --- N4 two_body_source.py ----------------------------------------------
+n4.amplitude_ratio_hi        3.0    PLACEHOLDER  A/B at or above this reads as a mode of body A
+n4.amplitude_ratio_lo        0.3333 PLACEHOLDER  A/B at or below this reads as sourced on body B
+n4.clock_tolerance_frac      0.01   PLACEHOLDER  permitted fractional mismatch between declared sample rates
+n4.phase_variance_floor      1e-06  PLACEHOLDER  a channel with rms at or below this carries no phase and no onset; a lead against it is not a measurement
+n4.envelope_window_frac      1.0    PLACEHOLDER  moving-RMS window as a fraction of the forcing period; below 1.0 the onset index moves with the carrier phase at onset
+n4.onset_frac                0.5    PLACEHOLDER  onset = first exceedance of this fraction of the body's OWN peak envelope
+n4.onset_search_periods      1.0    PLACEHOLDER  envelope cross-correlation lag is searched within this many forcing periods

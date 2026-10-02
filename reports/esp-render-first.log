@@ -1,0 +1,4 @@
+  File "/home/ubuntu/work-stability/stability-trigger-envelope/descent_record.py", line 766
+    """Run every fixture; returns list of (fid, desc, expected, got, detail)."""
+                                                                             ^
+SyntaxError: unterminated triple-quoted string literal (detected at line 811)

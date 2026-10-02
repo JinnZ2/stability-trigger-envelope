@@ -1,0 +1,6 @@
+Supported Sensors (Plug into A0 pin):
+	•	Electret Mic – captures ambient electromagnetic/air signal noise
+	•	Gas sensors (MQ series) – output chemical fluctuations
+	•	Piezoelectric film – captures vibration/noise signatures
+	•	Photodiode – detects EM fluctuations/light flicker
+	•	Magnetometer (e.g. HMC5883L) – optional via I2C for magnetic field chaos

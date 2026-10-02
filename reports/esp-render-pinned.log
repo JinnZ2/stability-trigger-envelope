@@ -1,0 +1,107 @@
+DISPATCH ESP-1 -- stability-trigger-envelope
+========================================================================
+
+CONSTRUCTED. No tractor, no trailer, no descent, no IMU. The traces below are
+generated bursts and the verdicts are statements about the instrument.
+
+The reference case in the work order is a real operator's account, carried at
+OBSERVED with N_operators = 1. Nothing in this file is that account: the
+fixtures are shaped after it so the planted faults fire, which is a different
+thing from reproducing it.
+
+F1 is the configuration the case describes AND the one a phase reading cannot
+resolve: the cab leads the trailer by about one curve reversal, and a phase
+lead is fixed only modulo one reversal, so a lead of one reversal and a lead
+of nothing produce the same correlation peak. The classifier reads onset
+timing instead. See RUN_NOTE.md CHOICE 1.
+
+F1 serpentine, cab-only oscillation -> expected GEOMETRIC_CAB_MODE
+  VERDICT: GEOMETRIC_CAB_MODE
+    cab rms is 7.04x the trailer, at or above the declared ratio 3
+    amplitude ratio cab/trailer: 7.039   (cab rms 0.6362, trailer rms 0.09039)
+    cab onset:     t = 4.36 s
+    trailer onset: t = 6.36 s
+    onset lead:    +2 s (positive = cab first)
+    envelope lag:  +2 s within 1 period(s) of the event, peak r 1.000
+    forcing period: 2 s   envelope window: 25 samples
+    onset agrees with amplitude: True
+
+F2 real trailer roll -> expected TRAILER_ROLL_RISK
+  VERDICT: TRAILER_ROLL_RISK
+    cab rms is 0.189x the trailer, at or below the declared ratio 0.3333
+    amplitude ratio cab/trailer: 0.1894   (cab rms 0.1205, trailer rms 0.6362)
+    cab onset:     t = 6.36 s
+    trailer onset: t = 4.36 s
+    onset lead:    -2 s (positive = cab first)
+    envelope lag:  -2 s within 1 period(s) of the event, peak r 1.000
+    forcing period: 2 s   envelope window: 25 samples
+    onset agrees with amplitude: True
+
+F3 no trailer IMU -> expected TRAILER_CHANNEL_ABSENT
+  VERDICT: TRAILER_CHANNEL_ABSENT
+    no trailer trace. The trailer has NOT been shown to be quiet, and fault A turns on that difference: a correct reading of the cab says nothing about the body carrying the at-risk mass.
+
+F4 clocks misaligned -> expected NOT_EVALUABLE
+  VERDICT: NOT_EVALUABLE
+    trace start times differ by 0.5 s, above the 0.05 s tolerance; a lead between two clocks is not a lead between two bodies
+
+F5 two runs on a road -> expected INSUFFICIENT_RUNS
+  INSUFFICIENT_RUNS on constructed-road-5 -- 2 run(s) with a trigger on this road against a declared minimum of 3. Two points give a speed and no spread, and an edge quoted without a spread is a point pretending to be a measurement.
+    runs with a trigger: 2   without: 1   required: 3
+    no-trigger speeds kept: [26.0]
+
+F6 ice (addition) -> expected OUT_OF_ENVELOPE
+  VERDICT: OUT_OF_ENVELOPE
+    surface 'ice' is outside the declared reading set ['dry', 'wet']; on snow or ice the margin and the sensor behaviour are different and this reader does not reach them
+
+F7 axes disagree (addition) -> expected NOT_EVALUABLE
+  VERDICT: NOT_EVALUABLE
+    amplitude reads GEOMETRIC_CAB_MODE while onset has the other body moving first (lead -2 s); two readings pointing opposite ways is not a verdict
+    amplitude ratio cab/trailer: 6.314   (cab rms 0.6026, trailer rms 0.09544)
+    cab onset:     t = 6.36 s
+    trailer onset: t = 4.36 s
+    onset lead:    -2 s (positive = cab first)
+    envelope lag:  -2 s within 1 period(s) of the event, peak r 1.000
+    forcing period: 2 s   envelope window: 25 samples
+    onset agrees with amplitude: False
+
+F8 comparable amplitudes (addition) -> expected NOT_EVALUABLE
+  VERDICT: NOT_EVALUABLE
+    amplitude ratio 1.15 sits between the declared bounds 0.3333 and 3; the two bodies move comparably and this record does not separate them
+    amplitude ratio cab/trailer: 1.148   (cab rms 0.6362, trailer rms 0.554)
+    cab onset:     t = 4.36 s
+    trailer onset: t = 6.08 s
+    onset lead:    +1.72 s (positive = cab first)
+    envelope lag:  +1 s within 1 period(s) of the event, peak r 0.991
+    forcing period: 2 s   envelope window: 25 samples
+
+RELOCATION TALLY over the constructed set
+  records: 9
+  by downstream_event:
+    none         2
+    pass         2
+    near_miss    2
+    incident     1
+    closure      2
+  by access-road bin (V2), edges [1.0, 2.0, 4.0]:
+    <=1      near_miss=1  incident=1  closure=1
+    <=2      pass=1  near_miss=1  closure=1
+    <=4      none=1
+    >4       none=1  pass=1
+  score: None
+  no composite is emitted. The counts are the reading; collapsing them would repeat the move that lost orders 2 to 4 in the first place.
+
+thresholds in force (every one PLACEHOLDER unless marked):
+  access_bins              1,2,4          provenanced
+  amplitude_ratio_hi       3.0            provenanced
+  amplitude_ratio_lo       0.3333         provenanced
+  clock_tolerance_s        0.05           provenanced
+  envelope_window_frac     0.25           provenanced
+  grade_pct_max            20.0           provenanced
+  grade_pct_min            0.0            provenanced
+  min_runs_for_edge        3              provenanced
+  onset_frac               0.5            provenanced
+  onset_search_periods     1.0            provenanced
+  onset_variance_floor     1e-06          provenanced
+  rate_tolerance_frac      0.01           provenanced
+  surfaces_in_envelope     dry,wet        provenanced

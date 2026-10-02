@@ -1,0 +1,11 @@
+# Optional: required only by symbolic/phantom_detector.py.
+# Pulls in torch (~2 GB) through sentence-transformers.
+#
+#   pip install -r requirements-nlp.txt
+#   python -m spacy download en_core_web_sm
+#
+# Note: sentence-transformers fetches all-MiniLM-L6-v2 from huggingface.co on
+# first use. In a network-restricted environment that download will fail at
+# runtime, not install time. See claim C12 in docs/FALSIFICATION_LOG.md.
+spacy>=3.0.0
+sentence-transformers>=2.2.0
